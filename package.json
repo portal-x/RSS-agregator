@@ -1,0 +1,31 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "rss aggregator",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --open",
+    "webpack": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/portal-x/frontend-project-lvl3.git"
+  },
+  "author": "Yurii Tkachuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/portal-x/frontend-project-lvl3/issues"
+  },
+  "homepage": "https://github.com/portal-x/frontend-project-lvl3#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-loader": "^5.2.3",
+    "html-webpack-plugin": "^5.3.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
