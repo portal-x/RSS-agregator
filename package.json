@@ -1,0 +1,23 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "rss aggregator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/portal-x/frontend-project-lvl3.git"
+  },
+  "author": "Yurii Tkachuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/portal-x/frontend-project-lvl3/issues"
+  },
+  "homepage": "https://github.com/portal-x/frontend-project-lvl3#readme",
+  "devDependencies": {
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0"
+  }
+}
