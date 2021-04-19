@@ -1,19 +1,14 @@
+
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "rss aggregator",
-<<<<<<< HEAD
   "private": true,
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open",
-    "webpack": "webpack",
-=======
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
->>>>>>> d2366804bdb8444e3313bb6c680ae9f52f37b886
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -26,7 +21,6 @@
   },
   "homepage": "https://github.com/portal-x/frontend-project-lvl3#readme",
   "devDependencies": {
-<<<<<<< HEAD
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^5.2.3",
     "html-webpack-plugin": "^5.3.1",
@@ -34,9 +28,5 @@
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
-=======
-    "webpack": "^5.33.2",
-    "webpack-cli": "^4.6.0"
->>>>>>> d2366804bdb8444e3313bb6c680ae9f52f37b886
   }
 }
