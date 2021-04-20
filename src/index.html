@@ -7,9 +7,28 @@
     <title>RSS агрегатор</title>
   </head>
   <body>
-    <div>
-      <input type="text">
-      <button>Add</button>
+    <div class="container">
+      <form class="was-validated">
+        <div class="mb-3">
+          <label for="validationTextarea" class="form-label"
+            >Текстовое поле</label
+          >
+          <textarea
+            class="form-control is-invalid"
+            id="validationTextarea"
+            placeholder="Обязательный пример текстового поля"
+            required
+          ></textarea>
+          <div class="invalid-feedback">
+            Пожалуйста, введите сообщение в текстовое поле.
+          </div>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary" type="submit" disabled>
+            Add
+          </button>
+        </div>
+      </form>
     </div>
   </body>
 </html>
