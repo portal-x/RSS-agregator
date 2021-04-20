@@ -5,4 +5,4 @@
 
 ## URL
 
-https://frontend-project-lvl3-one-sage.vercel.app/
+https://rss-agragator.vercel.app/
