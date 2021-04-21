@@ -21,6 +21,10 @@ module.exports = {
       chunks: 'all',
     },
   },
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
   devServer: {
     port: 5000,
     hot: isDev,
