@@ -2,22 +2,9 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
-
-const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: 'babel-loader',
-      options: { presets: ['@babel/preset-env'] },
-    },
-  ];
-  if (isDev) {
-    loaders.push('eslint-loader');
-  }
-
-  return loaders;
-};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -43,6 +30,9 @@ module.exports = {
       template: './index.html',
     }),
     new CleanWebpackPlugin(),
+    new ESLintPlugin({
+      exclude: path.resolve(__dirname, 'node_modules'),
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
     }),
@@ -56,7 +46,12 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
-        use: jsLoaders(),
+        use: [
+          {
+            loader: 'babel-loader',
+            options: { presets: ['@babel/preset-env'] },
+          },
+        ],
       },
     ],
   },
