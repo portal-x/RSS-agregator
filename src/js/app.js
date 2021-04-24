@@ -3,9 +3,12 @@ import { has } from 'lodash';
 import axios from 'axios';
 
 import { watchForm } from './watchers';
-import validator from './validator';
+import validate from './validator';
 
-const getData = async (url) => await axios.get(url);
+const getData = (url) => {
+  const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
+  return axios.get(`${proxy}${url}`);
+};
 
 
 export default () => {
@@ -22,10 +25,16 @@ export default () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const url = formData.get('url');
-    const validation = validator(url, state);
+    const validation = validate(url, state);
     if (has(validation, 'url')) {
-      watchedState.urls.unshift(url);
+      watchedState.urls.push(url);
       input.value = '';
+      console.log('validation.url:', validation.url);
+      const raw = getData(validation.url);
+      raw.then((data) => {
+        console.log('data:', data);
+        return data;
+      }).catch((e) => console.error(e));
       console.log('state.urls:', state.urls);
     } else {
       input.classList.add('is-invalid');
