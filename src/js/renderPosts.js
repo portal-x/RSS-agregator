@@ -7,7 +7,7 @@ const renderPost = ({ title, descript, link }, parentNode) => {
     'justify-content-between',
     'align-items-start'
   );
-  li.innerHTML = `<a href=${title} class="font-weight-bold" data-id="2" target="_blank" rel="noopener noreferrer">${descript}</a>`;
+  li.innerHTML = `<a href=${link} class="font-weight-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
   parentNode.append(li);
 };
 
