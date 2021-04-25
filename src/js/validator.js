@@ -1,13 +1,12 @@
 import * as yup from 'yup';
 
-export default (url, { urls }) => {
+export default (url, urls) => {
   const shema = yup.object().shape({
     url: yup.string().url().notOneOf(urls),
   });
   try {
-    const a = shema.validateSync({ url })
-    console.log('is valid', 'a:', a);
-    return a;
+    const validate = shema.validateSync({ url })
+    return validate;
   } catch (e) {
     console.log('not valid, error:', e);
     return ({
@@ -15,8 +14,4 @@ export default (url, { urls }) => {
     errorKeys: e.errors,
   })
   }
-  // return shema.validateSync({ url }).catch((err) => ({
-  //   type: 'error',
-  //   errorKeys: err.errors,
-  // }));
 };

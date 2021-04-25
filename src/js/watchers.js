@@ -1,9 +1,18 @@
 import onChange from 'on-change';
 
-export const watchForm = (state) => {
-  const watchedState = onChange(state, (path, value, previousValue) => {
-    // alert('value has changed');
-  })
-  return watchedState;
+import feedsRender from './renderFeeds';
+import postsRender from './renderPosts'
+
+export const watchFeeds = (feeds) => {
+  const watchedFeeds = onChange(feeds, () => {
+    feedsRender(feeds);
+  });
+  return watchedFeeds;
 };
 
+export const watchPosts = (posts) => {
+  const watchedPosts = onChange(posts, () => {
+    postsRender(posts)
+  });
+  return watchedPosts;
+};
