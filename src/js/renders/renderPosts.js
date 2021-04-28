@@ -1,5 +1,4 @@
 const renderPost = ({ title, descript, link }, parentNode) => {
-  console.log('title:', title);
   const li = document.createElement('li');
   li.classList.add(
     'list-group-item',
@@ -8,7 +7,7 @@ const renderPost = ({ title, descript, link }, parentNode) => {
     'align-items-start'
   );
   li.innerHTML = `<a href=${link} class="font-weight-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
-  parentNode.append(li);
+  parentNode.prepend(li);
 };
 
 export default (posts) => {
@@ -19,7 +18,6 @@ export default (posts) => {
   parentDiv.append(ulEl);
 
   for (const prop in posts) {
-    console.log('пост:', posts[prop]);
     posts[prop].forEach((post) => {
       renderPost(post, ulEl);
     });

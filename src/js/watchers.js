@@ -1,7 +1,8 @@
 import onChange from 'on-change';
 
-import feedsRender from './renderFeeds';
-import postsRender from './renderPosts'
+import feedsRender from './renders/renderFeeds';
+import postsRender from './renders/renderPosts';
+import validationRender from './renders/renderValidation';
 
 export const watchFeeds = (feeds) => {
   const watchedFeeds = onChange(feeds, () => {
@@ -12,7 +13,14 @@ export const watchFeeds = (feeds) => {
 
 export const watchPosts = (posts) => {
   const watchedPosts = onChange(posts, () => {
-    postsRender(posts)
+    postsRender(posts);
   });
   return watchedPosts;
+};
+
+export const watchValidation = (linkValidation) => {
+  const watchedValidation = onChange(linkValidation, () => {
+    validationRender(linkValidation);
+  });
+  return watchedValidation;
 };

@@ -5,7 +5,7 @@ const renderFeed = ({ title, description }, parentNode) => {
   const pEl = document.createElement('p');
   pEl.textContent = description;
   li.append(pEl);
-  parentNode.append(li);
+  parentNode.prepend(li);
 };
 
 export default (feeds) => {

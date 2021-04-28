@@ -8,7 +8,7 @@ export default (url, urls) => {
     const validate = shema.validateSync({ url })
     return validate;
   } catch (e) {
-    console.log('not valid, error:', e);
+    console.log('--------- not valid, error:', e.errors);
     return ({
     type: 'error',
     errorKeys: e.errors,
