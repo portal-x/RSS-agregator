@@ -54,7 +54,6 @@ export default () => {
 
     if (has(validation, 'url')) {
       state.urls.push(url);
-      // watchedValidation.status = ['success'];
       const raw = getData(validation.url);
       raw
         .then(({ data }) => {
@@ -77,21 +76,16 @@ export default () => {
       console.log('state:', state);
     }
 
-    // const postUpdater = () => {
-      console.log('start updater ===================>');
-      const promises = state.urls.map((url) => {
-        getData(url).then(({ data }) => {
+    state.urls.forEach(function postUpdater(url) {
+      getData(url)
+        .then(({ data }) => {
           const { posts } = RSSparser(data);
-          return posts
-        }).then((posts) => {
+          return posts;
+        })
+        .then((posts) => {
           console.log('🚀 ~ посты с postUpdater', posts);
-          // setTimeout(postUpdater, 5000);
+          setTimeout(() => postUpdater(url), 5000);
         });
-      });
-      setTimeout(() => {
-        Promise.all(promises);
-      }, 5000);
-    // };
-    // postUpdater();
+    });
   });
 };
