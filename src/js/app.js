@@ -6,7 +6,7 @@ import { setLocale } from 'yup';
 
 import { watchFeeds, watchPosts, watchValidation } from './watchers';
 import validate from './validator';
-import XMLparser from './XMLparser';
+import RSSparser from './RSSparser';
 import ru from './locales/ru';
 
 const getData = (url) => {
@@ -35,7 +35,6 @@ export default () => {
 
   const state = {
     urls: [],
-    // chanals: {},
     feeds: {},
     chanalPosts: {},
     linkValidation: {},
@@ -59,7 +58,7 @@ export default () => {
       const raw = getData(validation.url);
       raw
         .then(({ data }) => {
-          const parsedData = XMLparser(data);
+          const parsedData = RSSparser(data);
           const { title, description, posts } = parsedData;
           const id = uniqueId();
           watchedFeeds[id] = { title, description };
@@ -77,5 +76,22 @@ export default () => {
       watchedValidation.status = validation.errorKeys;
       console.log('state:', state);
     }
+
+    // const postUpdater = () => {
+      console.log('start updater ===================>');
+      const promises = state.urls.map((url) => {
+        getData(url).then(({ data }) => {
+          const { posts } = RSSparser(data);
+          return posts
+        }).then((posts) => {
+          console.log('🚀 ~ посты с postUpdater', posts);
+          // setTimeout(postUpdater, 5000);
+        });
+      });
+      setTimeout(() => {
+        Promise.all(promises);
+      }, 5000);
+    // };
+    // postUpdater();
   });
 };
