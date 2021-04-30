@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, unionBy } from 'lodash';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 
@@ -11,7 +12,8 @@ import ru from './locales/ru';
 
 const getData = (url) => {
   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
-  return axios.get(`${proxy}${url}`);
+  axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
+  return axios.get(`${proxy}${url}`, { params: { disableCache: true } });
 };
 
 const postUpdater = (id, url, prewPosts, updater) => {
@@ -21,12 +23,9 @@ const postUpdater = (id, url, prewPosts, updater) => {
       return posts;
     })
     .then((posts) => {
-      console.log('🚀 ~ посты с postUpdater', posts);
-      console.log('посты старые:', prewPosts[id]);
-      const updatePosts = unionBy(prewPosts[id], posts, 'title');
-      console.log('обьедененные посты:', updatePosts);
-      updater[id] = updatePosts;
-      setTimeout(() => postUpdater(id, url, prewPosts, updater), 30000);
+      const updatedPosts = unionBy(prewPosts[id], posts, 'title');
+      updater[id] = updatedPosts;
+      setTimeout(() => postUpdater(id, url, prewPosts, updater), 5000);
     });
 };
 
@@ -97,17 +96,5 @@ export default () => {
       const url = state.urls[id];
       postUpdater(id, url, state.chanalPosts, watchedPosts);
     }
-
-    // state.urls.forEach(function postUpdater(url) {
-    //   getData(url)
-    //     .then(({ data }) => {
-    //       const { posts } = RSSparser(data);
-    //       return posts;
-    //     })
-    //     .then((posts) => {
-    //       console.log('🚀 ~ посты с postUpdater', posts);
-    //       setTimeout(() => postUpdater(url), 5000);
-    //     });
-    // });
   });
 };
