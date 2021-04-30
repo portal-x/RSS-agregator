@@ -25,8 +25,10 @@ const postUpdater = (id, url, prewPosts, updater) => {
     .then((posts) => {
       const updatedPosts = unionBy(prewPosts[id], posts, 'title');
       updater[id] = updatedPosts;
-      setTimeout(() => postUpdater(id, url, prewPosts, updater), 5000);
-    });
+    })
+    .finally(() =>
+      setTimeout(() => postUpdater(id, url, prewPosts, updater), 5000)
+    );
 };
 
 export default () => {
