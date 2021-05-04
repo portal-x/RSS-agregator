@@ -7,6 +7,14 @@ const renderPost = ({ title, descript, link }, parentNode) => {
     'align-items-start'
   );
   li.innerHTML = `<a href=${link} class="font-weight-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
+  const button = document.createElement('button');
+  button.classList.add('btn', 'btn-primary', 'btn-sm');
+  button.setAttribute('type', 'button');
+  button.setAttribute('data-bs-toggle', 'modal');
+  button.setAttribute('data-bs-target', '#modal');
+  button.textContent = 'Просмотр';
+  li.append(button);
+
   parentNode.prepend(li);
 };
 
