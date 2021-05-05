@@ -1,4 +1,9 @@
 const renderPost = ({ title, descript, link }, parentNode) => {
+  const modalHeader = document.querySelector('.modal-title');
+  const modalBody = document.querySelector('.modal-body');
+  const linkButton = document.querySelector('a.btn');
+  console.log("🚀 ~ renderPost ~ linkButton", linkButton);
+
   const li = document.createElement('li');
   li.classList.add(
     'list-group-item',
@@ -6,7 +11,7 @@ const renderPost = ({ title, descript, link }, parentNode) => {
     'justify-content-between',
     'align-items-start'
   );
-  li.innerHTML = `<a href=${link} class="font-weight-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
+  li.innerHTML = `<a href=${link} class="fw-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-primary', 'btn-sm');
   button.setAttribute('type', 'button');
@@ -14,6 +19,13 @@ const renderPost = ({ title, descript, link }, parentNode) => {
   button.setAttribute('data-bs-target', '#modal');
   button.textContent = 'Просмотр';
   li.append(button);
+
+  button.addEventListener('click', () => {
+    console.log('title:', title);
+    modalHeader.textContent = title;
+    modalBody.textContent = descript;
+    linkButton.setAttribute('href', link);
+  });
 
   parentNode.prepend(li);
 };

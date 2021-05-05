@@ -27,7 +27,7 @@ const postUpdater = (id, url, prewPosts, updater) => {
       updater[id] = updatedPosts;
     })
     .finally(() =>
-      setTimeout(() => postUpdater(id, url, prewPosts, updater), 500000)
+      setTimeout(() => postUpdater(id, url, prewPosts, updater), 5000)
     );
 };
 
