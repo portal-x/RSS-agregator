@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { has, uniqueId, unionBy } from 'lodash';
+import { has, uniqueId, differenceBy, find } from 'lodash';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
@@ -16,19 +16,21 @@ const getData = (url) => {
   return axios.get(`${proxy}${url}`, { params: { disableCache: true } });
 };
 
-const postUpdater = (id, url, prewPosts, updater) => {
-  getData(url)
-    .then(({ data }) => {
-      const { posts } = RSSparser(data);
-      return posts;
-    })
-    .then((posts) => {
-      const updatedPosts = unionBy(prewPosts[id], posts, 'title');
-      updater[id] = updatedPosts;
-    })
-    .finally(() =>
-      setTimeout(() => postUpdater(id, url, prewPosts, updater), 5000)
-    );
+const handlePostButtonClick = (posts) => {
+  const modalHeader = document.querySelector('.modal-title');
+  const modalBody = document.querySelector('.modal-body');
+  const linkButton = document.querySelector('a.btn');
+
+  const postsButtons = document.querySelectorAll('[data-bs-toggle=modal]');
+  postsButtons.forEach((button) => {
+    button.addEventListener('click', ({ target }) => {
+      const { id } = target;
+      const currentPost = find(posts, { id });
+      modalHeader.textContent = currentPost.title;
+      modalBody.textContent = currentPost.descript;
+      linkButton.setAttribute('href', currentPost.link);
+    });
+  });
 };
 
 export default () => {
@@ -51,9 +53,9 @@ export default () => {
   });
 
   const state = {
-    urls: {},
-    feeds: {},
-    chanalPosts: {},
+    urls: [],
+    feeds: [],
+    chanalPosts: [],
     linkValidation: {},
   };
 
@@ -71,18 +73,20 @@ export default () => {
     const validation = validate(url, state.urls);
 
     if (has(validation, 'url')) {
-      const id = uniqueId();
-      state.urls[id] = url;
+      state.urls.push(url);
       const raw = getData(validation.url);
       raw
         .then(({ data }) => {
           const parsedData = RSSparser(data);
           const { title, description, posts } = parsedData;
-          watchedFeeds[id] = { title, description };
-          watchedPosts[id] = posts;
+          // const postsWithId = posts.map((post) => ({
+          //   id: uniqueId(),
+          //   ...post,
+          // }));
+          watchedFeeds.push({ title, description });
+          // watchedPosts.push(...postsWithId);
           watchedValidation.status = ['success'];
           console.log('state:', state);
-          // return data;
         })
         .catch((e) => {
           watchedValidation.status = ['invalidRSS'];
@@ -94,9 +98,26 @@ export default () => {
       console.log('state:', state);
     }
 
-    for (const id in state.urls) {
-      const url = state.urls[id];
-      postUpdater(id, url, state.chanalPosts, watchedPosts);
-    }
+    const postUpdater = (url) => {
+      getData(url)
+        .then(({ data }) => {
+          const { posts } = RSSparser(data);
+          return posts;
+        })
+        .then((posts) => {
+          const prewPosts = state.chanalPosts;
+          const newPosts = differenceBy(posts, prewPosts, 'title');
+          const newPostsWithId = newPosts.map((post) => ({
+            id: uniqueId(),
+            ...post,
+          }));
+          watchedPosts.push(...newPostsWithId);
+          handlePostButtonClick(state.chanalPosts);
+          console.log('state:', state);
+        })
+        .finally(() => setTimeout(() => postUpdater(url), 5000));
+    };
+
+    state.urls.forEach(postUpdater);
   });
 };

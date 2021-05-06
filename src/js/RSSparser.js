@@ -1,7 +1,6 @@
 export default (raw) => {
   const parser = new DOMParser();
   const chanel = parser.parseFromString(raw, 'text/xml');
-  console.log('chanel:', chanel);
 
   const titleEl = chanel.querySelector('title');
   const { textContent: title } = titleEl;

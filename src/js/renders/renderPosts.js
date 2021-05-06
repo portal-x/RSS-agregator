@@ -1,8 +1,7 @@
-const renderPost = ({ title, descript, link }, parentNode) => {
+const renderPost = ({ id, title, descript, link }, parentNode) => {
   const modalHeader = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const linkButton = document.querySelector('a.btn');
-  console.log("🚀 ~ renderPost ~ linkButton", linkButton);
 
   const li = document.createElement('li');
   li.classList.add(
@@ -14,18 +13,19 @@ const renderPost = ({ title, descript, link }, parentNode) => {
   li.innerHTML = `<a href=${link} class="fw-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-primary', 'btn-sm');
+  button.id = id;
   button.setAttribute('type', 'button');
   button.setAttribute('data-bs-toggle', 'modal');
   button.setAttribute('data-bs-target', '#modal');
   button.textContent = 'Просмотр';
   li.append(button);
 
-  button.addEventListener('click', () => {
-    console.log('title:', title);
-    modalHeader.textContent = title;
-    modalBody.textContent = descript;
-    linkButton.setAttribute('href', link);
-  });
+  // button.addEventListener('click', () => {
+  //   console.log('нажатие на кнопку из рендера');
+  //   modalHeader.textContent = title;
+  //   modalBody.textContent = descript;
+  //   linkButton.setAttribute('href', link);
+  // });
 
   parentNode.prepend(li);
 };
@@ -37,9 +37,7 @@ export default (posts) => {
   ulEl.classList.add('list-group');
   parentDiv.append(ulEl);
 
-  for (const prop in posts) {
-    posts[prop].forEach((post) => {
+  posts.forEach((post) => {
       renderPost(post, ulEl);
-    });
-  }
+  });
 };
