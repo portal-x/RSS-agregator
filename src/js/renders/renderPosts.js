@@ -13,7 +13,7 @@ const renderPost = ({ id, title, link, visited }, parentNode) => {
 
   const fontWeight = visited ? 'fw-normal' : 'fw-bold';
 
-  li.innerHTML = `<a href=${link} class=${fontWeight} data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
+  li.innerHTML = `<a href=${link} class=${fontWeight} data-id=${id} target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-primary', 'btn-sm');
   button.id = id;

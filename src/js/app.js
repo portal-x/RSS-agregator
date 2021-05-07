@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { has, uniqueId, differenceBy, find } from 'lodash';
+import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
@@ -25,15 +25,25 @@ const handleClickPost = (posts, watchedPosts) => {
   postsButtons.forEach((button) => {
     button.addEventListener('click', ({ target }) => {
       const { id } = target;
-      
-      watchedPosts.chanalPosts
+
+      const postIndex = findIndex(posts, { id });
+      watchedPosts[postIndex].visited = true;
+      handleClickPost(posts, watchedPosts);
+
       const currentPost = find(posts, { id });
-
-      // currentPost.visited = true;
-
       modalHeader.textContent = currentPost.title;
       modalBody.textContent = currentPost.descript;
       linkButton.setAttribute('href', currentPost.link);
+    });
+  });
+
+  const postsLinks = document.querySelectorAll('[data-id]');
+  postsLinks.forEach((postLink) => {
+    postLink.addEventListener('click', ({ target }) => {
+      const id = target.getAttribute('data-id');
+      const postIndex = findIndex(posts, { id });
+      watchedPosts[postIndex].visited = true;
+      handleClickPost(posts, watchedPosts);
     });
   });
 };
@@ -64,7 +74,6 @@ export default () => {
     linkValidation: {},
   };
 
-  console.log('state =>:', state);
   const watchedFeeds = watchFeeds(state.feeds);
   const watchedPosts = watchPosts(state.chanalPosts);
   const watchedValidation = watchValidation(state.linkValidation);
@@ -83,7 +92,7 @@ export default () => {
       raw
         .then(({ data }) => {
           const parsedData = RSSparser(data);
-          const { title, description, /*posts*/ } = parsedData;
+          const { title, description /*posts*/ } = parsedData;
           // const postsWithId = posts.map((post) => ({
           //   id: uniqueId(),
           //   ...post,
@@ -91,16 +100,13 @@ export default () => {
           watchedFeeds.push({ title, description });
           // watchedPosts.push(...postsWithId);
           watchedValidation.status = ['success'];
-          console.log('state:', state);
         })
         .catch((e) => {
           watchedValidation.status = ['invalidRSS'];
           console.error(e);
-          console.log('state:', state);
         });
     } else {
       watchedValidation.status = validation.errorKeys;
-      console.log('state:', state);
     }
 
     const postUpdater = (url) => {
@@ -119,9 +125,8 @@ export default () => {
           }));
           watchedPosts.push(...newPostsWithId);
           handleClickPost(state.chanalPosts, watchedPosts);
-          console.log('state:', state);
         })
-        .finally(() => setTimeout(() => postUpdater(url), 500000));
+        .finally(() => setTimeout(() => postUpdater(url), 5000));
     };
 
     state.urls.forEach(postUpdater);
