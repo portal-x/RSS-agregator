@@ -1,7 +1,7 @@
-const renderPost = ({ id, title, descript, link }, parentNode) => {
-  const modalHeader = document.querySelector('.modal-title');
-  const modalBody = document.querySelector('.modal-body');
-  const linkButton = document.querySelector('a.btn');
+const renderPost = ({ id, title, link, visited }, parentNode) => {
+  // const modalHeader = document.querySelector('.modal-title');
+  // const modalBody = document.querySelector('.modal-body');
+  // const linkButton = document.querySelector('a.btn');
 
   const li = document.createElement('li');
   li.classList.add(
@@ -10,7 +10,10 @@ const renderPost = ({ id, title, descript, link }, parentNode) => {
     'justify-content-between',
     'align-items-start'
   );
-  li.innerHTML = `<a href=${link} class="fw-bold" data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
+
+  const fontWeight = visited ? 'fw-normal' : 'fw-bold';
+
+  li.innerHTML = `<a href=${link} class=${fontWeight} data-id="2" target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-primary', 'btn-sm');
   button.id = id;

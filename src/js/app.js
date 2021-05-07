@@ -16,7 +16,7 @@ const getData = (url) => {
   return axios.get(`${proxy}${url}`, { params: { disableCache: true } });
 };
 
-const handlePostButtonClick = (posts) => {
+const handleClickPost = (posts, watchedPosts) => {
   const modalHeader = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const linkButton = document.querySelector('a.btn');
@@ -25,7 +25,12 @@ const handlePostButtonClick = (posts) => {
   postsButtons.forEach((button) => {
     button.addEventListener('click', ({ target }) => {
       const { id } = target;
+      
+      watchedPosts.chanalPosts
       const currentPost = find(posts, { id });
+
+      // currentPost.visited = true;
+
       modalHeader.textContent = currentPost.title;
       modalBody.textContent = currentPost.descript;
       linkButton.setAttribute('href', currentPost.link);
@@ -78,7 +83,7 @@ export default () => {
       raw
         .then(({ data }) => {
           const parsedData = RSSparser(data);
-          const { title, description, posts } = parsedData;
+          const { title, description, /*posts*/ } = parsedData;
           // const postsWithId = posts.map((post) => ({
           //   id: uniqueId(),
           //   ...post,
@@ -109,13 +114,14 @@ export default () => {
           const newPosts = differenceBy(posts, prewPosts, 'title');
           const newPostsWithId = newPosts.map((post) => ({
             id: uniqueId(),
+            visited: false,
             ...post,
           }));
           watchedPosts.push(...newPostsWithId);
-          handlePostButtonClick(state.chanalPosts);
+          handleClickPost(state.chanalPosts, watchedPosts);
           console.log('state:', state);
         })
-        .finally(() => setTimeout(() => postUpdater(url), 5000));
+        .finally(() => setTimeout(() => postUpdater(url), 500000));
     };
 
     state.urls.forEach(postUpdater);
