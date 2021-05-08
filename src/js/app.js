@@ -10,10 +10,13 @@ import validate from './validator';
 import RSSparser from './RSSparser';
 import ru from './locales/ru';
 
-const getData = (url) => {
+const getData = (url, watchedValidation) => {
   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-  return axios.get(`${proxy}${url}`, { params: { disableCache: true } });
+  return axios.get(`${proxy}${url}`, { params: { disableCache: true } }).catch((e) => {
+    watchedValidation.status = ['networkErr'];
+    console.error(e);
+  });
 };
 
 const handleClickPost = (posts, watchedPosts) => {
@@ -88,7 +91,7 @@ export default () => {
 
     if (has(validation, 'url')) {
       state.urls.push(url);
-      const raw = getData(validation.url);
+      const raw = getData(validation.url, watchedValidation);
       raw
         .then(({ data }) => {
           const parsedData = RSSparser(data);
@@ -110,7 +113,7 @@ export default () => {
     }
 
     const postUpdater = (url) => {
-      getData(url)
+      getData(url, watchedValidation)
         .then(({ data }) => {
           const { posts } = RSSparser(data);
           return posts;
