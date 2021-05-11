@@ -82,7 +82,6 @@ export default () => {
   const watchedValidation = watchValidation(state.linkValidation);
 
   const form = document.querySelector('form');
-  console.log('document:', document);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -94,6 +93,7 @@ export default () => {
 
     if (has(validation, 'url')) {
       state.urls.push(url);
+      console.log('обновленный стейт из if:', state);
       const raw = getData(validation.url, watchedValidation);
       raw
         .then(({ data }) => {
@@ -114,6 +114,7 @@ export default () => {
         });
     } else {
       watchedValidation.status = validation.errorKeys;
+      console.log('ошибка валидации');
     }
 
     const postUpdater = (url) => {
