@@ -90,6 +90,7 @@ export default () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
+    console.log('переданный url', url, 'validation:', validation);
 
     if (has(validation, 'url')) {
       state.urls.push(url);
