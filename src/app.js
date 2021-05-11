@@ -95,8 +95,10 @@ export default () => {
       state.urls.push(url);
       console.log('обновленный стейт из if:', state);
       const raw = getData(validation.url, watchedValidation);
+      console.log('raw:', raw);
       raw
         .then(({ data }) => {
+          console.log('data из промиса:', data);
           const parsedData = RSSparser(data);
           const { title, description /*posts*/ } = parsedData;
           // const postsWithId = posts.map((post) => ({
