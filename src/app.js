@@ -86,6 +86,7 @@ export default () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log('клик по кнопке, state до:', state);
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
@@ -104,6 +105,7 @@ export default () => {
           watchedFeeds.push({ title, description });
           // watchedPosts.push(...postsWithId);
           watchedValidation.status = ['success'];
+          console.log('state после:', state);
         })
         .catch((e) => {
           watchedValidation.status = ['invalidRSS'];
