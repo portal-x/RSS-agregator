@@ -16,8 +16,9 @@ const getData = (url, watchedValidation) => {
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
   return axios
     .get(`${proxy}${url}`, { params: { disableCache: true } })
-    .then(() => {
+    .then((data) => {
       console.log('!!!!---- искуственный then -------!!!!');
+      return data;
     })
     .catch((e) => {
       console.log('ошибка сети..............');
@@ -105,13 +106,7 @@ export default () => {
     if (has(validation, 'url')) {
       state.urls.push(url);
       console.log('обновленный стейт из if:', state);
-      const raw = getData(validation.url, watchedValidation);
-
-      getData(validation.url, watchedValidation).then(() => {
-        console.log('------- искуственный then ----------');
-      });
-
-      raw
+      getData(validation.url, watchedValidation)
         .then(({ data }) => {
           console.log('data из промиса:', data);
           const parsedData = RSSparser(data);
