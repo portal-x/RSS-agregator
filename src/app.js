@@ -11,9 +11,11 @@ import RSSparser from './RSSparser';
 import ru from './locales/ru';
 
 const getData = (url, watchedValidation) => {
+  console.log('получение данных...............');
   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
   return axios.get(`${proxy}${url}`, { params: { disableCache: true } }).catch((e) => {
+    console.log('ошибка сети..............');
     watchedValidation.status = ['networkErr'];
     console.error(e);
   });
@@ -95,7 +97,6 @@ export default () => {
       state.urls.push(url);
       console.log('обновленный стейт из if:', state);
       const raw = getData(validation.url, watchedValidation);
-      console.log('raw:', raw);
       raw
         .then(({ data }) => {
           console.log('data из промиса:', data);
