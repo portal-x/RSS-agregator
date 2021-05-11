@@ -82,6 +82,7 @@ export default () => {
   const watchedValidation = watchValidation(state.linkValidation);
 
   const form = document.querySelector('form');
+  console.log('form:', form);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
