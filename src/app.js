@@ -103,9 +103,9 @@ export default () => {
       state.urls.push(url);
       console.log('обновленный стейт из if:', state);
       const raw = getData(validation.url, watchedValidation);
-      raw.then(() => {
+      Promise.resolve(raw).then(() => {
         console.log('------- искуственный then ----------');
-      })
+      });
       raw
         .then(({ data }) => {
           console.log('data из промиса:', data);
