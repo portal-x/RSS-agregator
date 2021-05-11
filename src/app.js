@@ -16,6 +16,9 @@ const getData = (url, watchedValidation) => {
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
   return axios
     .get(`${proxy}${url}`, { params: { disableCache: true } })
+    .then(() => {
+      console.log('!!!!---- искуственный then -------!!!!');
+    })
     .catch((e) => {
       console.log('ошибка сети..............');
       watchedValidation.status = ['networkErr'];
@@ -107,7 +110,7 @@ export default () => {
       getData(validation.url, watchedValidation).then(() => {
         console.log('------- искуственный then ----------');
       });
-      
+
       raw
         .then(({ data }) => {
           console.log('data из промиса:', data);
