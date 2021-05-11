@@ -10,7 +10,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
-    main: ['@babel/polyfill', './js/bin/index.js'],
+    main: ['@babel/polyfill', './bin/index.js'],
   },
   output: {
     filename: '[name].[chunkhash].js',
@@ -31,7 +31,7 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: './index.html',
+      template: '../index.html',
     }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({
