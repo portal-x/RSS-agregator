@@ -14,11 +14,13 @@ const getData = (url, watchedValidation) => {
   console.log('получение данных...............');
   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-  return axios.get(`${proxy}${url}`, { params: { disableCache: true } }).catch((e) => {
-    console.log('ошибка сети..............');
-    watchedValidation.status = ['networkErr'];
-    console.error(e);
-  });
+  return axios
+    .get(`${proxy}${url}`, { params: { disableCache: true } })
+    .catch((e) => {
+      console.log('ошибка сети..............');
+      watchedValidation.status = ['networkErr'];
+      console.error(e);
+    });
 };
 
 const handleClickPost = (posts, watchedPosts) => {
@@ -84,9 +86,13 @@ export default () => {
   const watchedValidation = watchValidation(state.linkValidation);
 
   const form = document.querySelector('form');
+  const input = document.querySelector('input');
+  const submitButt = document.querySelector('[aria-label=add]');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    input.setAttribute('readonly', true);
+    submitButt.setAttribute('disabled', 'disabled');
     console.log('клик по кнопке, state до:', state);
     const formData = new FormData(e.target);
     const url = formData.get('url');
@@ -114,10 +120,16 @@ export default () => {
         .catch((e) => {
           watchedValidation.status = ['invalidRSS'];
           console.error(e);
+        })
+        .finally(() => {
+          input.removeAttribute('readonly');
+          submitButt.removeAttribute('disabled');
         });
     } else {
       watchedValidation.status = validation.errorKeys;
       console.log('ошибка валидации');
+      input.removeAttribute('readonly');
+      submitButt.removeAttribute('disabled');
     }
 
     const postUpdater = (url) => {
