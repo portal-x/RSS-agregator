@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
+// import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 
@@ -13,7 +13,7 @@ import ru from './locales/ru';
 const getData = (url, watchedValidation) => {
   console.log('получение данных...............');
   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
-  axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
+  // axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
   return axios
     .get(`${proxy}${url}`, { params: { disableCache: true } })
     .then((data) => {
