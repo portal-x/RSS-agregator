@@ -2,6 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "rss aggregator",
+  "main": "src/js/bin/index.js",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --mode development",
