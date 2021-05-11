@@ -16,10 +16,6 @@ const getData = (url, watchedValidation) => {
   // axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
   return axios
     .get(`${proxy}${url}`, { params: { disableCache: true } })
-    .then((data) => {
-      console.log('!!!!---- искуственный then -------!!!!');
-      return data;
-    })
     .catch((e) => {
       console.log('ошибка сети..............');
       watchedValidation.status = ['networkErr'];
@@ -108,15 +104,14 @@ export default () => {
       console.log('обновленный стейт из if:', state);
       getData(validation.url, watchedValidation)
         .then(({ data }) => {
-          console.log('data из промиса:', data);
           const parsedData = RSSparser(data);
-          const { title, description /*posts*/ } = parsedData;
-          // const postsWithId = posts.map((post) => ({
-          //   id: uniqueId(),
-          //   ...post,
-          // }));
+          const { title, description, posts } = parsedData;
+          const postsWithId = posts.map((post) => ({
+            id: uniqueId(),
+            ...post,
+          }));
           watchedFeeds.push({ title, description });
-          // watchedPosts.push(...postsWithId);
+          watchedPosts.push(...postsWithId);
           watchedValidation.status = ['success'];
           console.log('state после:', state);
         })
@@ -155,6 +150,9 @@ export default () => {
         .finally(() => setTimeout(() => postUpdater(url), 5000));
     };
 
-    state.urls.forEach(postUpdater);
+    setTimeout(() => {
+      state.urls.forEach(postUpdater);
+    }, 5000);
+    // state.urls.forEach(postUpdater);
   });
 };
