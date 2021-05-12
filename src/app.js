@@ -57,7 +57,8 @@ const handleClickPost = (posts, watchedPosts) => {
 };
 
 export default () => {
-  i18next.init({
+  const i18n = i18next.createInstance();
+  i18n.init({
     lng: 'ru',
     debug: true,
     resources: {
@@ -84,7 +85,7 @@ export default () => {
 
   const watchedFeeds = watchFeeds(state.feeds);
   const watchedPosts = watchPosts(state.chanalPosts);
-  const watchedValidation = watchValidation(state.linkValidation);
+  const watchedValidation = watchValidation(state.linkValidation, i18n);
 
   const form = document.querySelector('form');
   const input = document.querySelector('input');

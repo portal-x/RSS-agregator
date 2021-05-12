@@ -18,9 +18,9 @@ export const watchPosts = (posts) => {
   return watchedPosts;
 };
 
-export const watchValidation = (linkValidation) => {
+export const watchValidation = (linkValidation, i18n) => {
   const watchedValidation = onChange(linkValidation, () => {
-    validationRender(linkValidation);
+    validationRender(linkValidation, i18n);
   });
   return watchedValidation;
 };
