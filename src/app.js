@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
-import axios from 'axios';
+// import axios from 'axios';
 // import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
@@ -9,19 +9,20 @@ import { watchFeeds, watchPosts, watchValidation } from './watchers';
 import validate from './validator';
 import RSSparser from './RSSparser';
 import ru from './locales/ru';
+import getData from './getData';
 
-const getData = (url, watchedValidation) => {
-  console.log('получение данных...............');
-  const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
-  // axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-  return axios
-    .get(`${proxy}${url}`, { params: { disableCache: true } })
-    .catch((e) => {
-      console.log('ошибка сети..............');
-      watchedValidation.status = ['networkErr'];
-      console.error(e);
-    });
-};
+// const getData = (url, watchedValidation) => {
+//   console.log('получение данных...............');
+//   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
+//   // // axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
+//   return axios
+//     .get(`${proxy}${url}`, { params: { disableCache: true } })
+//     .catch((e) => {
+//       console.log('ошибка сети..............');
+//       watchedValidation.status = ['networkErr'];
+//       console.error(e);
+//     });
+// };
 
 const handleClickPost = (posts, watchedPosts) => {
   const modalHeader = document.querySelector('.modal-title');
@@ -104,7 +105,7 @@ export default () => {
       console.log('обновленный стейт из if:', state);
       getData(validation.url, watchedValidation)
         .then(({ data }) => {
-          const parsedData = RSSparser(data);
+          const parsedData = RSSparser(data.contents); // add .contents
           const { title, description, posts } = parsedData;
           const postsWithId = posts.map((post) => ({
             id: uniqueId(),
@@ -133,7 +134,7 @@ export default () => {
     const postUpdater = (url) => {
       getData(url, watchedValidation)
         .then(({ data }) => {
-          const { posts } = RSSparser(data);
+          const { posts } = RSSparser(data.contents); // add .contents
           return posts;
         })
         .then((posts) => {
