@@ -155,6 +155,5 @@ export default () => {
     setTimeout(() => {
       state.urls.forEach(postUpdater);
     }, 5000);
-    // state.urls.forEach(postUpdater);
   });
 };

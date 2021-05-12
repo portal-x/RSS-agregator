@@ -1,8 +1,4 @@
 const renderPost = ({ id, title, link, visited }, parentNode) => {
-  // const modalHeader = document.querySelector('.modal-title');
-  // const modalBody = document.querySelector('.modal-body');
-  // const linkButton = document.querySelector('a.btn');
-
   const li = document.createElement('li');
   li.classList.add(
     'list-group-item',
@@ -22,13 +18,6 @@ const renderPost = ({ id, title, link, visited }, parentNode) => {
   button.setAttribute('data-bs-target', '#modal');
   button.textContent = 'Просмотр';
   li.append(button);
-
-  // button.addEventListener('click', () => {
-  //   console.log('нажатие на кнопку из рендера');
-  //   modalHeader.textContent = title;
-  //   modalBody.textContent = descript;
-  //   linkButton.setAttribute('href', link);
-  // });
 
   parentNode.prepend(li);
 };

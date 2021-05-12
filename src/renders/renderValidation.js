@@ -1,5 +1,3 @@
-// import i18next from 'i18next';
-
 export default ({ status }, i18n) => {
   const [valid] = status;
 
