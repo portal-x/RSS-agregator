@@ -56,9 +56,9 @@ const handleClickPost = (posts, watchedPosts) => {
   });
 };
 
-export default () => {
+export default async () => {
   const i18n = i18next.createInstance();
-  i18n.init({
+  await i18n.init({
     lng: 'ru',
     debug: true,
     resources: {
