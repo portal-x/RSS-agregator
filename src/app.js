@@ -5,7 +5,7 @@ import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 
-import { watchFeeds, watchPosts, watchValidation } from './watchers';
+import { watchFeeds, watchPosts, FormValidation } from './watchers';
 import validate from './validator';
 import RSSparser from './RSSparser';
 import ru from './locales/ru';
@@ -80,31 +80,28 @@ export default () => {
     urls: [],
     feeds: [],
     chanalPosts: [],
-    linkValidation: {},
+    formState: { availability: 'ready', status: [] },
   };
 
   const watchedFeeds = watchFeeds(state.feeds);
   const watchedPosts = watchPosts(state.chanalPosts);
-  const watchedValidation = watchValidation(state.linkValidation, i18n);
+  const watchedForm = FormValidation(state.formState, i18n);
 
   const form = document.querySelector('form');
-  const input = document.querySelector('input');
-  const submitButt = document.querySelector('[aria-label=add]');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    input.setAttribute('readonly', true);
-    submitButt.setAttribute('disabled', 'disabled');
+    watchedForm.availability = 'busy';
     console.log('клик по кнопке, state до:', state);
+
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
-    console.log('переданный url', url, 'validation:', validation);
 
     if (has(validation, 'url')) {
       state.urls.push(url);
       console.log('обновленный стейт из if:', state);
-      getData(validation.url, watchedValidation)
+      getData(validation.url, watchedForm)
         .then(({ data }) => {
           const parsedData = RSSparser(data.contents); // add .contents
           const { title, description, posts } = parsedData;
@@ -114,26 +111,25 @@ export default () => {
           }));
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
-          watchedValidation.status = ['success'];
+          watchedForm.status = ['success'];
           console.log('state после:', state);
         })
         .catch((e) => {
-          watchedValidation.status = ['invalidRSS'];
+          watchedForm.status = ['invalidRSS'];
           console.error(e);
         })
         .finally(() => {
-          input.removeAttribute('readonly');
-          submitButt.removeAttribute('disabled');
+          watchedForm.availability = 'ready';
         });
     } else {
-      watchedValidation.status = validation.errorKeys;
+      watchedForm.status = validation.errorKeys;
       console.log('ошибка валидации');
-      input.removeAttribute('readonly');
-      submitButt.removeAttribute('disabled');
+
+      watchedForm.availability = 'ready';
     }
 
     const postUpdater = (url) => {
-      getData(url, watchedValidation)
+      getData(url, watchedForm)
         .then(({ data }) => {
           const { posts } = RSSparser(data.contents); // add .contents
           return posts;
