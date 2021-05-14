@@ -42,6 +42,7 @@ const handleClickPost = (posts, watchedPosts) => {
 };
 
 export default async () => {
+  console.log('Инициализация...');
   const i18n = i18next.createInstance();
   await i18n.init({
     lng: 'ru',
@@ -77,7 +78,7 @@ export default async () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedForm.availability = 'busy';
-    console.log('клик по кнопке, state до:', state);
+    console.log('клик по кнопке, state:', state);
 
     const formData = new FormData(e.target);
     const url = formData.get('url');
@@ -85,8 +86,8 @@ export default async () => {
 
     if (has(validation, 'url')) {
       state.urls.push(url);
-      console.log('обновленный стейт из if:', state);
-      getData(validation.url, watchedForm)
+      console.log('обновленный стейт c новым URL:', state);
+      getData(validation.url)
         .then(({ data }) => {
           const parsedData = RSSparser(data.contents); // add .contents
           const { title, description, posts } = parsedData;
@@ -97,11 +98,14 @@ export default async () => {
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
           watchedForm.status = ['success'];
-          console.log('state после:', state);
         })
         .catch((e) => {
+          if (e.message === 'networkErr') {
+            watchedForm.status = [e.message];
+          } else {
           watchedForm.status = ['invalidRSS'];
-          console.error(e);
+          console.log('текст ошибки: invalidRSS');
+          }
         })
         .finally(() => {
           watchedForm.availability = 'ready';
@@ -114,7 +118,7 @@ export default async () => {
     }
 
     const postUpdater = (url) => {
-      getData(url, watchedForm)
+      getData(url)
         .then(({ data }) => {
           const { posts } = RSSparser(data.contents); // add .contents
           return posts;
@@ -133,8 +137,8 @@ export default async () => {
         .finally(() => setTimeout(() => postUpdater(url), 5000));
     };
 
-    // setTimeout(() => {
-    //   state.urls.forEach(postUpdater);
-    // }, 5000);
+    setTimeout(() => {
+      state.urls.forEach(postUpdater);
+    }, 5000);
   });
 };

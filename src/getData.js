@@ -7,11 +7,9 @@ const allOrigins = (url) => {
   return result.toString();
 };
 
-export default (url, watchedValidation) => {
-  console.log('получение данных.............');
+export default (url) => {
   return axios.get(allOrigins(url)).catch((e) => {
-    console.log('ошибка сети..............');
-    watchedValidation.status = ['networkErr'];
-    console.error(e);
+    console.log(e);
+    throw new Error('networkErr');
   });
 };
