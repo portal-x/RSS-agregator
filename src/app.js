@@ -1,7 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
-// import axios from 'axios';
-// import axiosRetry from 'axios-retry';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 
@@ -10,19 +8,6 @@ import validate from './validator';
 import RSSparser from './RSSparser';
 import ru from './locales/ru';
 import getData from './getData';
-
-// const getData = (url, watchedValidation) => {
-//   console.log('получение данных...............');
-//   const proxy = 'https://hexlet-allorigins.herokuapp.com/raw?url=';
-//   // // axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-//   return axios
-//     .get(`${proxy}${url}`, { params: { disableCache: true } })
-//     .catch((e) => {
-//       console.log('ошибка сети..............');
-//       watchedValidation.status = ['networkErr'];
-//       console.error(e);
-//     });
-// };
 
 const handleClickPost = (posts, watchedPosts) => {
   const modalHeader = document.querySelector('.modal-title');
