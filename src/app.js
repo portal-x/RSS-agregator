@@ -133,8 +133,8 @@ export default async () => {
         .finally(() => setTimeout(() => postUpdater(url), 5000));
     };
 
-    setTimeout(() => {
-      state.urls.forEach(postUpdater);
-    }, 5000);
+    // setTimeout(() => {
+    //   state.urls.forEach(postUpdater);
+    // }, 5000);
   });
 };
