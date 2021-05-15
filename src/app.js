@@ -41,26 +41,28 @@ const handleClickPost = (posts, watchedPosts) => {
   });
 };
 
-export default async () => {
+export default () => {
   console.log('Инициализация...');
   const i18n = i18next.createInstance();
-  await i18n.init({
-    lng: 'ru',
-    debug: true,
-    resources: {
-      ru,
-    },
-  });
-
-  setLocale({
-    mixed: {
-      default: 'validationError',
-      notOneOf: 'duplicateURL',
-    },
-    string: {
-      url: 'invalidURL',
-    },
-  });
+  i18n
+    .init({
+      lng: 'ru',
+      debug: true,
+      resources: {
+        ru,
+      },
+    })
+    .then(() => {
+      setLocale({
+        mixed: {
+          default: 'validationError',
+          notOneOf: 'duplicateURL',
+        },
+        string: {
+          url: 'invalidURL',
+        },
+      });
+    });
 
   const state = {
     urls: [],
@@ -103,8 +105,8 @@ export default async () => {
           if (e.message === 'networkErr') {
             watchedForm.status = [e.message];
           } else {
-          watchedForm.status = ['invalidRSS'];
-          console.log('текст ошибки: invalidRSS');
+            watchedForm.status = ['invalidRSS'];
+            console.log('текст ошибки: invalidRSS');
           }
         })
         .finally(() => {

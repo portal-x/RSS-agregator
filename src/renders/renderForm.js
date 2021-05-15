@@ -17,6 +17,8 @@ export default ({ status, availability }, i18n) => {
       break;
     case 'ready':
       input.removeAttribute('readonly');
+      input.value = '';
+
       submitButt.removeAttribute('disabled');
       break;
     default:
@@ -24,7 +26,4 @@ export default ({ status, availability }, i18n) => {
   }
 
   feedback.textContent = i18n.t(valid);
-  if (isValid) {
-    input.value = '';
-  }
 };

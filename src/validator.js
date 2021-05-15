@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
-export default (url, urls) => {
+export default (url, prewUrls) => {
   const shema = yup.object().shape({
-    url: yup.string().url().notOneOf(urls),
+    url: yup.string().url().notOneOf(prewUrls),
   });
   try {
     const validate = shema.validateSync({ url })
