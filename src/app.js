@@ -85,7 +85,6 @@ export default () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
-    console.log("🚀 ~ form.addEventListener ~ validation", validation);
     
     if (has(validation, 'url')) {
       state.urls.push(url);

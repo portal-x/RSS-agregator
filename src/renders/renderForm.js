@@ -10,10 +10,10 @@ export default ({ status, availability }, i18n) => {
   
   switch (availability) {
     case 'busy':
-      feedback.textContent = 'some text';
+      feedback.textContent = '';
       input.setAttribute('readonly', true);
       submitButt.setAttribute('disabled', 'disabled');
-      console.log('feedback.textCont:', feedback.textContent);
+      console.log('feedback.textCont when busy:', feedback.textContent);
       break;
     case 'ready':
       input.removeAttribute('readonly');
