@@ -47,7 +47,7 @@ export default () => {
   i18n
     .init({
       lng: 'ru',
-      debug: true,
+      debug: false,
       resources: {
         ru,
       },
@@ -68,7 +68,7 @@ export default () => {
     urls: [],
     feeds: [],
     chanalPosts: [],
-    formState: { availability: 'ready', status: [] },
+    formState: { availability: 'ready', status: '' },
   };
 
   const watchedFeeds = watchFeeds(state.feeds);
@@ -85,13 +85,14 @@ export default () => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
-
+    console.log("🚀 ~ form.addEventListener ~ validation", validation);
+    
     if (has(validation, 'url')) {
       state.urls.push(url);
       console.log('обновленный стейт c новым URL:', state);
       getData(validation.url)
         .then(({ data }) => {
-          const parsedData = RSSparser(data.contents); // add .contents
+          const parsedData = RSSparser(data.contents);
           const { title, description, posts } = parsedData;
           const postsWithId = posts.map((post) => ({
             id: uniqueId(),
@@ -99,13 +100,13 @@ export default () => {
           }));
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
-          watchedForm.status = ['success'];
+          watchedForm.status = 'success';
         })
         .catch((e) => {
           if (e.message === 'networkErr') {
-            watchedForm.status = [e.message];
+            watchedForm.status = e.message;
           } else {
-            watchedForm.status = ['invalidRSS'];
+            watchedForm.status = 'invalidRSS';
             console.log('текст ошибки: invalidRSS');
           }
         })
@@ -113,7 +114,7 @@ export default () => {
           watchedForm.availability = 'ready';
         });
     } else {
-      watchedForm.status = validation.errorKeys;
+      watchedForm.status = validation.errorKeys[0];
       console.log('ошибка валидации');
 
       watchedForm.availability = 'ready';
@@ -122,7 +123,7 @@ export default () => {
     const postUpdater = (url) => {
       getData(url)
         .then(({ data }) => {
-          const { posts } = RSSparser(data.contents); // add .contents
+          const { posts } = RSSparser(data.contents);
           return posts;
         })
         .then((posts) => {
