@@ -7,7 +7,7 @@ const renderPost = ({ id, title, link, visited }, parentNode) => {
     'align-items-start'
   );
 
-  const fontWeight = visited ? 'fw-normal' : 'fw-bold';
+  const fontWeight = visited ? 'fw-weight-normal' : 'font-weight-bold';//'fw-normal' : 'fw-bold';
 
   li.innerHTML = `<a href=${link} class=${fontWeight} data-id=${id} target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
