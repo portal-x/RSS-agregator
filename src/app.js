@@ -100,6 +100,7 @@ export default () => {
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
           watchedForm.status = 'success';
+          watchedForm.availability = 'ready';
         })
         .catch((e) => {
           if (e.message === 'networkErr') {
