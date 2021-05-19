@@ -1,12 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
-import i18next from 'i18next';
+// import i18next from 'i18next';
 import { setLocale } from 'yup';
 
 import { watchFeeds, watchPosts, FormValidation } from './watchers';
 import validate from './validator';
 import RSSparser from './RSSparser';
-import ru from './locales/ru';
+// import ru from './locales/ru';
 import getData from './getData';
 
 const handleClickPost = (posts, watchedPosts) => {
@@ -41,18 +41,18 @@ const handleClickPost = (posts, watchedPosts) => {
   });
 };
 
-export default () => {
-  console.log('Инициализация...');
-  const i18n = i18next.createInstance();
-  i18n
-    .init({
-      lng: 'ru',
-      debug: false,
-      resources: {
-        ru,
-      },
-    })
-    .then(() => {
+export default (i18n) => {
+  // console.log('Инициализация...');
+  // const i18n = i18next.createInstance();
+  // i18n
+  //   .init({
+  //     lng: 'ru',
+  //     debug: false,
+  //     resources: {
+  //       ru,
+  //     },
+  //   })
+  //   .then(() => {
       setLocale({
         mixed: {
           default: 'validationError',
@@ -62,7 +62,7 @@ export default () => {
           url: 'invalidURL',
         },
       });
-    });
+  //   });
 
   const state = {
     urls: [],
@@ -80,7 +80,6 @@ export default () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedForm.availability = 'busy';
-    console.log('клик по кнопке, state:', state);
 
     const formData = new FormData(e.target);
     const url = formData.get('url');
@@ -88,7 +87,6 @@ export default () => {
     
     if (has(validation, 'url')) {
       state.urls.push(url);
-      console.log('обновленный стейт c новым URL:', state);
       getData(validation.url)
         .then(({ data }) => {
           const parsedData = RSSparser(data.contents);
@@ -101,6 +99,8 @@ export default () => {
           watchedPosts.push(...postsWithId);
           watchedForm.status = 'success';
           watchedForm.availability = 'ready';
+
+          handleClickPost(state.chanalPosts, watchedPosts);
         })
         .catch((e) => {
           if (e.message === 'networkErr') {
