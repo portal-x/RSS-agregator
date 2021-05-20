@@ -13,7 +13,6 @@ export default ({ status, availability }, i18n) => {
       feedback.textContent = '';
       input.setAttribute('readonly', true);
       submitButt.setAttribute('disabled', 'disabled');
-      console.log('feedback.textCont when busy:', feedback.textContent);
       break;
     case 'ready':
       input.removeAttribute('readonly');
@@ -25,6 +24,5 @@ export default ({ status, availability }, i18n) => {
       throw new Error('unexpected formState');
   }
 
-  console.log('feedback.textContent:', feedback.textContent);
   feedback.textContent = i18n.t(status);
 };

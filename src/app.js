@@ -94,7 +94,7 @@ export default (i18n) => {
           const postsWithId = posts.map((post) => ({
             id: uniqueId(),
             ...post,
-          }));
+          })).reverse(); // <======================== add reverse();
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
           watchedForm.status = 'success';
