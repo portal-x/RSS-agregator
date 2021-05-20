@@ -101,7 +101,7 @@ export default (i18n) => {
             watchedForm.status = e.message;
           } else {
             watchedForm.status = 'invalidRSS';
-            throw new Error('invalid_RSS');
+            // throw new Error('invalid_RSS');
           }
         })
         .finally(() => {
