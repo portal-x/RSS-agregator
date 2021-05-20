@@ -101,7 +101,6 @@ export default (i18n) => {
             watchedForm.status = 'networkErr';
           } else {
             watchedForm.status = 'invalidRSS';
-            // throw new Error('invalid_RSS');
           }
         })
         .finally(() => {
@@ -109,10 +108,9 @@ export default (i18n) => {
         });
     } else {
       const [errMess] = validation.errorKeys;
-      watchedForm.status = errMess; //validation.errorKeys[0];
+      watchedForm.status = errMess;
 
       watchedForm.availability = 'ready';
-      // throw new Error('validation_error');
     }
 
     const postUpdater = (link) => {

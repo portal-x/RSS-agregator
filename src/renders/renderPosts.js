@@ -1,13 +1,18 @@
-const renderPost = ({ id, title, link, visited }, parentNode) => {
+const renderPost = ({
+  id,
+  title,
+  link,
+  visited,
+}, parentNode) => {
   const li = document.createElement('li');
   li.classList.add(
     'list-group-item',
     'd-flex',
     'justify-content-between',
-    'align-items-start'
+    'align-items-start',
   );
 
-  const fontWeight = visited ? 'fw-weight-normal' : 'font-weight-bold'; //'fw-normal' : 'fw-bold';
+  const fontWeight = visited ? 'fw-weight-normal' : 'font-weight-bold'; // 'fw-normal' : 'fw-bold';
 
   li.innerHTML = `<a href=${link} class=${fontWeight} data-id=${id} target="_blank" rel="noopener noreferrer">${title}</a>`;
   const button = document.createElement('button');
