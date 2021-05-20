@@ -8,6 +8,6 @@ const allOrigins = (url) => {
 };
 
 export default (url) =>
-  axios.get(allOrigins(url)).catch((e) => {
-    throw new Error('networkErr', e);
+  axios.get(allOrigins(url)).catch(() => {
+    throw new Error('networkErr');
   });
