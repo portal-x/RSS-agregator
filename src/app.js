@@ -112,7 +112,7 @@ export default (i18n) => {
       watchedForm.status = errMess; //validation.errorKeys[0];
 
       watchedForm.availability = 'ready';
-      throw new Error('validation_error');
+      // throw new Error('validation_error');
     }
 
     const postUpdater = (link) => {
