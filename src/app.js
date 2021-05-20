@@ -98,7 +98,7 @@ export default (i18n) => {
         })
         .catch((err) => {
           if (err.message === 'networkErr') {
-            watchedForm.status = e.message;
+            watchedForm.status = 'networkErr';
           } else {
             watchedForm.status = 'invalidRSS';
             // throw new Error('invalid_RSS');
