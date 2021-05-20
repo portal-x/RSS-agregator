@@ -1,12 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
-// import i18next from 'i18next';
 import { setLocale } from 'yup';
 
 import { watchFeeds, watchPosts, FormValidation } from './watchers';
 import validate from './validator';
 import RSSparser from './RSSparser';
-// import ru from './locales/ru';
 import getData from './getData';
 
 const handleClickPost = (posts, watchedPosts) => {
@@ -42,27 +40,15 @@ const handleClickPost = (posts, watchedPosts) => {
 };
 
 export default (i18n) => {
-  // console.log('Инициализация...');
-  // const i18n = i18next.createInstance();
-  // i18n
-  //   .init({
-  //     lng: 'ru',
-  //     debug: false,
-  //     resources: {
-  //       ru,
-  //     },
-  //   })
-  //   .then(() => {
-      setLocale({
-        mixed: {
-          default: 'validationError',
-          notOneOf: 'duplicateURL',
-        },
-        string: {
-          url: 'invalidURL',
-        },
-      });
-  //   });
+  setLocale({
+    mixed: {
+      default: 'validationError',
+      notOneOf: 'duplicateURL',
+    },
+    string: {
+      url: 'invalidURL',
+    },
+  });
 
   const state = {
     urls: [],
@@ -84,17 +70,19 @@ export default (i18n) => {
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const validation = validate(url, state.urls);
-    
+
     if (has(validation, 'url')) {
       state.urls.push(url);
       getData(validation.url)
         .then(({ data }) => {
           const parsedData = RSSparser(data.contents);
           const { title, description, posts } = parsedData;
-          const postsWithId = posts.map((post) => ({
-            id: uniqueId(),
-            ...post,
-          })).reverse(); // <======================== add reverse();
+          const postsWithId = posts
+            .map((post) => ({
+              id: uniqueId(),
+              ...post,
+            }))
+            .reverse();
           watchedFeeds.push({ title, description });
           watchedPosts.push(...postsWithId);
           watchedForm.status = 'success';
