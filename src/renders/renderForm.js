@@ -7,7 +7,7 @@ export default ({ status, availability }, i18n) => {
   input.classList.toggle('is-invalid', !isValid);
   feedback.classList.toggle('text-success', isValid);
   feedback.classList.toggle('text-danger', !isValid);
-  
+
   switch (availability) {
     case 'busy':
       feedback.textContent = '';

@@ -5,12 +5,12 @@ export default (url, prewUrls) => {
     url: yup.string().url().notOneOf(prewUrls),
   });
   try {
-    const validate = shema.validateSync({ url })
+    const validate = shema.validateSync({ url });
     return validate;
   } catch (e) {
-    return ({
-    type: 'error',
-    errorKeys: e.errors,
-  })
+    return {
+      type: 'error',
+      errorKeys: e.errors,
+    };
   }
 };

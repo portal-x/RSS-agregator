@@ -1,5 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { has, uniqueId, differenceBy, find, findIndex } from 'lodash';
+import {
+  has,
+  uniqueId,
+  differenceBy,
+  find,
+  findIndex,
+} from 'lodash';
 import { setLocale } from 'yup';
 
 import { watchFeeds, watchPosts, FormValidation } from './watchers';
@@ -90,26 +96,27 @@ export default (i18n) => {
 
           handleClickPost(state.chanalPosts, watchedPosts);
         })
-        .catch((e) => {
-          if (e.message === 'networkErr') {
+        .catch((err) => {
+          if (err.message === 'networkErr') {
             watchedForm.status = e.message;
           } else {
             watchedForm.status = 'invalidRSS';
-            console.log('текст ошибки: invalidRSS');
+            throw new Error('invalid_RSS');
           }
         })
         .finally(() => {
           watchedForm.availability = 'ready';
         });
     } else {
-      watchedForm.status = validation.errorKeys[0];
-      console.log('ошибка валидации');
+      const [errMess] = validation.errorKeys;
+      watchedForm.status = errMess; //validation.errorKeys[0];
 
       watchedForm.availability = 'ready';
+      throw new Error('validation_error');
     }
 
-    const postUpdater = (url) => {
-      getData(url)
+    const postUpdater = (link) => {
+      getData(link)
         .then(({ data }) => {
           const { posts } = RSSparser(data.contents);
           return posts;
@@ -125,7 +132,7 @@ export default (i18n) => {
           watchedPosts.push(...newPostsWithId);
           handleClickPost(state.chanalPosts, watchedPosts);
         })
-        .finally(() => setTimeout(() => postUpdater(url), 5000));
+        .finally(() => setTimeout(() => postUpdater(link), 5000));
     };
 
     setTimeout(() => {
